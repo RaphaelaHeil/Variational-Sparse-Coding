@@ -75,6 +75,7 @@ class ConvVSC(nn.Module):
     def encode(self, x):
         # Recognition function
         # x shape: (batch_sz, n_channels, width)
+       # print(x.shape)
         features = self.conv_encoder(x)
         features = features.view(-1, self.flat_conv_output_sz)
         hidden = self.features_to_hidden(features)

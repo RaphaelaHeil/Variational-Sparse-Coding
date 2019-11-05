@@ -4,8 +4,9 @@ from pathlib import Path
 from glob import glob
 import pandas as pd
 from tqdm import tqdm
+import time
 
-from ..logger import Logger
+#from ..logger import Logger
 
 class VariationalBaseModel():
     def __init__(self, dataset, width, height, channels, latent_sz, 
@@ -156,16 +157,17 @@ class VariationalBaseModel():
         if start_epoch is None:
             start_epoch = self.load_last_model(checkpoints_path, logging_func) \
                                            if reload_model else 1
+        
         name = self.model.__class__.__name__
         run_name = f'{name}_{self.dataset}_{start_epoch}_{epochs}_' \
                    f'{self.latent_sz}_{str(self.lr).replace(".", "-")}'
-        logger = Logger(f'{logs_path}/{run_name}')
+        #logger = Logger(f'{logs_path}/{run_name}')
         logging_func(f'Training {name} model...')
         for epoch in range(start_epoch, start_epoch + epochs):
             train_loss = self.train(train_loader, epoch, logging_func)
             test_loss = self.test(test_loader, epoch, logging_func)
             # Store log
-            logger.scalar_summary(train_loss, test_loss, epoch)
+         #   logger.scalar_summary(train_loss, test_loss, epoch)
             # Optional update
             self.update_()
             # For each report interval store model and save images

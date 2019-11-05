@@ -63,7 +63,7 @@ class VSC(nn.Module):
     
 class VariationalSparseCoding(VariationalBaseModel):
     def __init__(self, dataset, width, height, channels, hidden_sz, latent_sz, 
-                 learning_rate, alpha, device, log_interval, normalize, flatten):
+                 learning_rate, alpha, device, log_interval, normalize, flatten=True):
         super().__init__(dataset, width, height, channels, latent_sz,
                          learning_rate, device, log_interval, normalize, flatten)
         
@@ -75,7 +75,7 @@ class VariationalSparseCoding(VariationalBaseModel):
     
     
     # Reconstruction + KL divergence losses summed over all elements of batch
-    def loss_function(self, x, recon_x, mu, logvar, logspike):
+    def loss_function(self, x, recon_x, mu, logvar, logspike, train=True):
         # Reconstruction term sum (mean?) per batch
         BCE = F.binary_cross_entropy(recon_x, x.view(-1, self.input_sz),
                                      size_average = False)
